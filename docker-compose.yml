@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  api-falsa:
+    build:
+      context: ./api
+    container_name: api-falsa
+    ports:
+      - "5000:5000"
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"   # para los servicios
+      - "15672:15672" # para el panel de RabbitMQ
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
+
+  producer:
+    build:
+      context: ./producer
+    container_name: producer
+    depends_on:
+      - api-falsa
+      - rabbitmq
+    environment:
+      - API_URL=http://api-falsa:5000/generate_vote
+      - RABBITMQ_HOST=rabbitmq
+      - INTERVAL_SECONDS=5

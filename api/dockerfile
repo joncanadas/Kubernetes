@@ -5,7 +5,7 @@ FROM python:3.11-slim
 WORKDIR /app
 
 # Copiar archivos
-COPY api_falsa.py .
+COPY encuestas.py .
 
 # Instalar dependencias
 RUN pip install Flask
