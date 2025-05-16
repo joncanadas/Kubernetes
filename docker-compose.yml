@@ -10,14 +10,13 @@ services:
 
   rabbitmq:
     image: rabbitmq:3-management
-    container_name: rabbitmq
     ports:
-      - "5672:5672"   # para los servicios
-      - "15672:15672" # para el panel de RabbitMQ
+      - "5672:5672"
+      - "15672:15672"
     environment:
-      - RABBITMQ_DEFAULT_USER=admin
-      - RABBITMQ_DEFAULT_PASS=admin
-
+      RABBITMQ_DEFAULT_USER: myuser
+      RABBITMQ_DEFAULT_PASS: mypass
+      
   producer:
     build:
       context: ./producer
@@ -28,4 +27,7 @@ services:
     environment:
       - API_URL=http://api-falsa:5000/generate_vote
       - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_USER=myuser       
+      - RABBITMQ_PASS=mypass       
       - INTERVAL_SECONDS=5
+
