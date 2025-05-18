@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Votaciones</title>
+</head>
+<body>
+  <h1>Votos recibidos</h1>
+  <ul id="vote-list"></ul>
+
+  <script>
+    async function fetchVotes() {
+      const res = await fetch('/votes');
+      const votes = await res.json();
+      const list = document.getElementById('vote-list');
+      list.innerHTML = '';
+      votes.forEach(v => {
+        const li = document.createElement('li');
+        li.textContent = `${v.athlete} (${v.topic}) - ${v.reason}`;
+        list.appendChild(li);
+      });
+    }
+
+    setInterval(fetchVotes, 3000); // Actualiza cada 3 segundos
+    fetchVotes();
+  </script>
+</body>
+</html>
