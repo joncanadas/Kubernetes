@@ -16,7 +16,7 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: myuser
       RABBITMQ_DEFAULT_PASS: mypass
-      
+
   producer:
     build:
       context: ./producer
@@ -30,4 +30,52 @@ services:
       - RABBITMQ_USER=myuser       
       - RABBITMQ_PASS=mypass       
       - INTERVAL_SECONDS=5
+
+  consumer1:
+    build:
+      context: ./consumer1
+    container_name: consumer1
+    depends_on:
+      - rabbitmq
+      - mongodb
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_USER=myuser
+      - RABBITMQ_PASS=mypass
+      - MONGO_HOST=mongodb
+      - MONGO_PORT=27017
+
+  consumer2:
+    build:
+      context: ./consumer2
+    container_name: consumer2
+    depends_on:
+      - rabbitmq
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_USER=myuser
+      - RABBITMQ_PASS=mypass
+
+  consumer3:
+    build:
+      context: ./consumer3
+    container_name: consumer3
+    depends_on:
+      - rabbitmq
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_USER=myuser
+      - RABBITMQ_PASS=mypass
+
+  mongodb:
+    image: mongo:6
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
+
 

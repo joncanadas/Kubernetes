@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consumer3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: consumer3
+  template:
+    metadata:
+      labels:
+        app: consumer3
+    spec:
+      containers:
+        - name: consumer3
+          image: consumer3:latest
+          imagePullPolicy: Never
+          env:
+            - name: RABBITMQ_HOST
+              value: "rabbitmq"
+            - name: RABBITMQ_USER
+              value: "myuser"
+            - name: RABBITMQ_PASS
+              value: "mypass"
+
